@@ -1,6 +1,6 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 :root {
     --global-font-size: 15px;
@@ -28,3 +28,6 @@
 }
 
 
+.border-none {
+  border: none !important;
+}
