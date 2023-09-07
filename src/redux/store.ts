@@ -1,5 +1,5 @@
-import {Action, ThunkAction, configureStore} from '@reduxjs/toolkit';
-import HomeSlicer from './slicer/homeSlicer';
+import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
+import HomeSlicer from "./slicer/homeSlicer";
 export const Store = configureStore({
   reducer: {
     HomeSlicer,
