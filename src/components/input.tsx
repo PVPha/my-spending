@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import {useRef, useEffect} from 'react';
 const Input = ({ value, disabled }: { value: string; disabled: boolean;}) => {
   let uuid = uuidv4();
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current?.focus();  
