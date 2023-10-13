@@ -2,12 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { spending } from "@/service";
 
+type anyObj = {
+  [key: string]: any
+}
 export interface HomeState {
   command: object[];
   result: object[];
   directory: string;
   loading: boolean;
-  pageOrDatabase: object;
+  pageOrDatabase: anyObj;
   spending: spending | object;
 }
 export interface Command {

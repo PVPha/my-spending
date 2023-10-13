@@ -1,11 +1,19 @@
 import { HomeSlicer } from "@/redux/slicer/homeSlicer";
 import { Store } from "@/redux/store";
 import { v4 as uuidv4 } from "uuid";
-const Input = ({ value, disabled }: { value: string; disabled: boolean }) => {
+import {useRef, useEffect} from 'react';
+const Input = ({ value, disabled }: { value: string; disabled: boolean;}) => {
   let uuid = uuidv4();
+  const inputRef = useRef(null)
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current?.focus();  
+    }
+  },[])
   return (
-    <div>
+    <div className="grow-1">
       <input
+        ref={inputRef}
         type="text"
         className="border-none"
         defaultValue={value}

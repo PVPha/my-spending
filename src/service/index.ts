@@ -25,7 +25,7 @@ class services {
                     break;
                 case '-w':
                     let content = cmd?.splice(index + 1, 4);
-                    let name = content[0]?.replace('"', '');
+                    let name = content[0]?.replaceAll('"', '')?.trim();
                     let price = content[1]?.replace('k', '000');
                     let category = '';
                     switch (content[2]) {
@@ -53,12 +53,12 @@ class services {
                         default:
                             break;
                     }
-                    let desc = content[3]
+                    let desc = content[3]?.replaceAll('"', '')?.trim();
                     Store.dispatch(HomeSlicer.actions.setSpending({ name, price, category, desc }));
                     this.createPage({
                         Name: name,
                         Price: price,
-                        Category: category,
+                        Category: category, 
                         Desc: desc});
                     break;
                 default:
@@ -69,13 +69,16 @@ class services {
     createPage = (data: spending) => {
         Store.dispatch(HomeSlicer.actions.setLoading(true));
         const url = this.#NOTION_API + '/pages';
+        const pageOrDatabase = Store.getState()?.HomeSlicer?.pageOrDatabase;
         const req = {
             parent: {
-                database_id: '{{DATABASE_ID}}',
+                database_id: pageOrDatabase?.id,
             },
             properties: {
                 Name: {
-                    rich_text: [
+                    id: 'title',
+                    type: 'title',
+                    title: [
                         {
                             type: 'text',
                             text: {
@@ -87,15 +90,22 @@ class services {
                 Price: {
                     number: +data.Price,
                 },
+                // Category: {
+                //     select: pageOrDatabase?.properties?.Category?.multi_select?.options?.find((otp: { name: string }) => otp?.name === data.Category)?.id,
+                // },
                 Category: {
-                    select: 'them vo day',
+                    multi_select: [
+                        {
+                            name: data.Category,
+                        },
+                    ],
                 },
                 Desc: {
                     rich_text: [
                         {
                             type: 'text',
                             text: {
-                                content: data.Desc,
+                                content: data.Desc || " ",
                             },
                         },
                     ],
@@ -103,7 +113,7 @@ class services {
             },
         };
         axiosClient
-            .post(url, data)
+            .post(url, req)
             .then((res) => {})
             .catch((ex) => {
                 console.log(ex);
