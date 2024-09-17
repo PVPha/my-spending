@@ -1,7 +1,6 @@
 import { Store } from '@/redux/store';
 import axiosClient from '../core/config/axiosClient';
 import homeSlicer, { HomeSlicer } from '@/redux/slicer/homeSlicer';
-import _ from 'lodash';
 
 export interface spending {
     Name: string;
@@ -55,11 +54,13 @@ class services {
                     }
                     let desc = content[3]
                     Store.dispatch(HomeSlicer.actions.setSpending({ name, price, category, desc }));
-                    this.createPage({
-                        Name: name,
-                        Price: price,
-                        Category: category,
-                        Desc: desc});
+                    console.log(Store.getState()?.HomeSlicer?.pageOrDatabase);
+                    
+                    // this.createPage({
+                    //     Name: name,
+                    //     Price: price,
+                    //     Category: category,
+                    //     Desc: desc});
                     break;
                 default:
                     break;
@@ -104,8 +105,8 @@ class services {
         };
         axiosClient
             .post(url, data)
-            .then((res) => {})
-            .catch((ex) => {
+            .then((res: any) => {})
+            .catch((ex: any) => {
                 console.log(ex);
             })
             .finally(() => {
@@ -125,13 +126,13 @@ class services {
         };
         axiosClient
             .post(url, payload)
-            .then((res) => {
+            .then((res: any) => {
                 console.log(res);
                 if (res.status === 200 && res.data?.type === 'page_or_database') {
                     Store.dispatch(HomeSlicer.actions.setPageOrDatabase(res.data?.results?.[0]));
                 }
             })
-            .catch((ex) => {
+            .catch((ex: any) => {
                 console.log(ex);
             })
             .finally(() => {
